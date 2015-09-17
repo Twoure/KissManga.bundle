@@ -28,8 +28,8 @@ def Start():
     ObjectContainer.view_group = 'InfoList'
     DirectoryObject.thumb = R(ICON)
 
-#    HTTP.CacheTime = CACHE_1DAY  # 1 day cache time  # once done editing will change back
-    HTTP.CacheTime = 0  # 0 sec cache time
+    HTTP.CacheTime = CACHE_1DAY  # 1 day cache time  # once done editing will change back
+#    HTTP.CacheTime = 0  # 0 sec cache time
 
 ####################################################################################################
 # Create the main menu
