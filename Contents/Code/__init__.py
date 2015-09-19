@@ -19,13 +19,8 @@ ICON = 'icon-default.png'
 ####################################################################################################
 
 def Start():
-#    Plugin.AddViewGroup('ImageStream', viewMode='Pictures', mediaType='items')
-#    Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
-#    Plugin.AddViewGroup('InfoList', viewMode='InfoList', mediaType='items')
-#
     ObjectContainer.art = R(ART)
     ObjectContainer.title1 = TITLE
-#    ObjectContainer.view_group = 'InfoList'
     DirectoryObject.thumb = R(ICON)
 
 #    HTTP.CacheTime = CACHE_1DAY  # 1 day cache time  # once done editing will change back
