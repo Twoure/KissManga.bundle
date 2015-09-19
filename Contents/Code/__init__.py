@@ -19,13 +19,8 @@ ICON = 'icon-default.png'
 ####################################################################################################
 
 def Start():
-    Plugin.AddViewGroup('ImageStream', viewMode='Pictures', mediaType='items')
-    Plugin.AddViewGroup('List', viewMode='List', mediaType='items')
-    Plugin.AddViewGroup('InfoList', viewMode='InfoList', mediaType='items')
-
     ObjectContainer.art = R(ART)
     ObjectContainer.title1 = TITLE
-    ObjectContainer.view_group = 'InfoList'
     DirectoryObject.thumb = R(ICON)
 
     HTTP.CacheTime = 10800  # 3 hour cache
@@ -35,9 +30,9 @@ def Start():
 ####################################################################################################
 # Create the main menu
 
-@handler(PREFIX, TITLE, ICON, ART)
+@handler(PREFIX, TITLE, thumb=ICON, art=ART)
 def MainMenu():
-    oc = ObjectContainer(title2=TITLE, view_group='List')
+    oc = ObjectContainer(title2=TITLE)  #, view_group='List')
     oc.add(DirectoryObject(key=Callback(AlphabetList), title='Alphabets'))
     oc.add(DirectoryObject(key=Callback(GenreList), title='Genres'))
     oc.add(DirectoryObject(key=Callback(Bookmarks, title='My Bookmarks'), title='My Bookmarks'))
@@ -47,6 +42,7 @@ def MainMenu():
         title='Search',
         summary='Search Kissmanga',
         prompt='Search for...'))
+
     return oc
 
 ####################################################################################################
@@ -108,7 +104,7 @@ def Bookmarks(title):
 
 @route(PREFIX + '/alphabets')
 def AlphabetList():
-    oc = ObjectContainer(title2='Manga By #, A-Z', view_group='List')
+    oc = ObjectContainer(title2='Manga By #, A-Z')  # , view_group='List')
 
     # Manually create the '#' Directory
     oc.add(DirectoryObject(key=Callback(DirectoryList, page=1, pname='0', ntitle='#'), title='#'))
@@ -131,7 +127,7 @@ def GenreList():
     url = BASE_URL + '/MangaList'  # set url for populating genres array
     html = HTML.ElementFromURL(url)  # formate url response into html for xpath
 
-    oc = ObjectContainer(title2='Manga By Genres', view_group='List')
+    oc = ObjectContainer(title2='Manga By Genres')  # , view_group='List')
 
     # For loop to pull out valid Genres
     for genre in html.xpath('//div[@class="barContent"]//a'):
@@ -202,7 +198,7 @@ def DirectoryList(page, pname, ntitle):
         # set title2 for last page
         main_title = '%s: Page %s, Last Page' % (str(ntitle), str(page))
 
-    oc = ObjectContainer(title2=main_title, view_group='List')
+    oc = ObjectContainer(title2=main_title)  # , view_group='List')
 
     # parse url for each Manga and pull out its title, summary, and cover image
     # took some time to figure out how to get the javascript info
@@ -241,14 +237,20 @@ def DirectoryList(page, pname, ntitle):
     return oc
 
 ####################################################################################################
-# Create the Manga Page with it's chapters and a Bookmark function
+# Creates the Manga Page with a Chapter(s) section and a Bookmark option
 
 @route(PREFIX + '/manga')
 def MangaPage(manga, title):
-    oc = ObjectContainer(title2=title, view_group='List')
+    oc = ObjectContainer(title2=title)
 
     url = BASE_URL + '/Manga/' + manga
     html = HTML.ElementFromURL(url)
+
+    # add the Chapter(s) section
+    oc.add(DirectoryObject(
+        key=Callback(ChaptersPage, manga=manga, title=title),
+        title='Chapter(s)',
+        summary='List all currently avalible chapter(s) for \"%s\"' % title))
 
     # Test if the Dict has the 'Bookmarks' section yet
     if Dict['Bookmarks']:
@@ -333,9 +335,21 @@ def MangaPage(manga, title):
 
         # provide a way to add or remove from bookmarks list
         oc.add(DirectoryObject(
-            key = Callback(AddBookmark, manga=manga, title=title, cover=cover, summary=summary),
-            title = 'Add Bookmark',
-            summary = 'Add \"%s\" to your Bookmarks list.' % title))
+            key=Callback(AddBookmark, manga=manga, title=title, cover=cover, summary=summary),
+            title='Add Bookmark',
+            summary='Add \"%s\" to your Bookmarks list.' % title))
+
+    return oc
+
+####################################################################################################
+# Create the Manga Page with it's chapters
+
+@route(PREFIX + '/chapters')
+def ChaptersPage(manga, title):
+    oc = ObjectContainer(title2=title)  #, view_group='List')
+
+    url = BASE_URL + '/Manga/' + manga
+    html = HTML.ElementFromURL(url)
 
     # parse html for internal chapter name and public name
     for chapter in html.xpath('//table[@class="listing"]/tr//a'):

@@ -37,13 +37,12 @@ How To Install
 	- Windows XP, Server 2003, or Home Server: C:\Documents and Settings[Your Username]\Local Settings\Application Data\Plex Media Server\Plug-ins
 	- Mac/Linux: ~/Library/Application Support/Plex Media Server/Plug-ins
 
-- Restart PMS **This is old, should not have to restart PMS**
+- ~~Restart PMS~~ **This is old, should not have to restart PMS**
 
 Known Issues
 ============
 
 - Once in awhile the 'Add Bookmark' function will try and add duplicates, but I've corrected for it in the code so there should be no problem.
 - Chromecast doesn't work, don't know why yet.  Assuming it has to do with how I create the Photo Albums
-- Sometimes the server times out on Plex/Web when doing a Search.  Has to do with the fact that the code is watching for redirects in the Search URL.  If the Plex/Web client would wait about 1-2 sec more then it would be fine.  I find it interesting for the Android the timeout is much longer, somewhere in the minutes range.
 - Sometimes the Cover Art work does not display in the directory even though it has the image URL.  Might be a parallelization issue.
 - This is not a useful reader for the Plex/Web client, but works well for Smart phones and Plex Media Center
