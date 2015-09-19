@@ -28,7 +28,8 @@ def Start():
     ObjectContainer.view_group = 'InfoList'
     DirectoryObject.thumb = R(ICON)
 
-    HTTP.CacheTime = CACHE_1DAY  # 1 day cache time  # once done editing will change back
+    HTTP.CacheTime = 10800  # 3 hour cache
+#    HTTP.CacheTime = CACHE_1DAY  # 1 day cache time  # once done editing will change back
 #    HTTP.CacheTime = 0  # 0 sec cache time
 
 ####################################################################################################
