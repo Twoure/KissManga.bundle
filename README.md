@@ -1,3 +1,5 @@
+**Channel is not being maintained.  Use [KissNetwork.bundle](https://github.com/Twoure/KissNetwork.bundle) for Manga from KissManga.**
+
 About
 ===============
 
